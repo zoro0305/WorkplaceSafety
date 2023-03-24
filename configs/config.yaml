@@ -1,0 +1,3 @@
+---
+DATA:
+  USER_INFO_PATH: "external_data/user_info.json"  # absolute path is available
