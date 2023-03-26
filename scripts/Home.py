@@ -32,17 +32,23 @@ class streamlit_web():
         register = st.checkbox("立即註冊帳戶")
         if register:
             pass
-        user_name = st.text_input("使用者名稱 : ", "", max_chars=10)
-        if user_name:
+        user_name_login = st.text_input("使用者名稱 : ", "", max_chars=10)
+        if user_name_login:
             st.write("<p style='font-family:Courier; font-size: 15px; color: Tan;'>\
                      <b>已成功輸入</b></p>", unsafe_allow_html=True)
-        user_password = st.text_input("使用者密碼 : ", "", max_chars=15, type="password")
-        if user_password:
+            if user_name_login not in user_info.keys():
+                st.write("<p style='font-family:Courier; font-size: 15px; color: Tomato;'>\
+                         <b>使用者帳號尚未註冊</b></p>", unsafe_allow_html=True)
+        user_password_login = st.text_input("使用者密碼 : ", "", max_chars=15, type="password")
+        if user_password_login:
             st.write("<p style='font-family:Courier; font-size: 15px; color: Tan;'>\
                      <b>已成功輸入</b></p>", unsafe_allow_html=True)
-            if user_info.get(user_name) != user_password:
+            if user_info.get(user_name_login) != user_password_login:
                 st.write("<p style='font-family:Courier; font-size: 15px; color: Tomato;'>\
                          <b>使用者帳號或密碼輸入錯誤或尚未註冊</b></p>", unsafe_allow_html=True)
+            else:
+                st.write("<p style='font-family:Courier; font-size: 15px; color: SaddleBrown;'>\
+                         <b>已成功登入</b></p>", unsafe_allow_html=True)
 
     def main(self):
         """the main execution function of the web.
@@ -54,7 +60,7 @@ class streamlit_web():
 
         col1, col2 = st.columns(2)
         with col1:
-            st.markdown("<p style='font-family:Noto Sans TC; font-size: 18px'>\
+            st.markdown("<p style='font-family:Noto Sans TC; font-size: 20px'>\
                         網頁簡介</p>", unsafe_allow_html=True)
 
         with col2:

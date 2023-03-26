@@ -7,6 +7,10 @@ name = "pypi"
 streamlit = "*"
 schedule = "*"
 pyyaml = "*"
+streamlit-multipage = "*"
+selenium = "*"
+webdriver-manager = "*"
+bs4 = "*"
 
 [dev-packages]
 pylint = "*"
@@ -14,3 +18,4 @@ pytest = "*"
 
 [requires]
 python_version = "3.8"
+python_full_version = "3.8.9"
