@@ -3,7 +3,7 @@
 這是一個streamlit網站的開發程式碼, 網站主要提供職業安全議題的相關服務
 
 ## 本地執行方式
-streamlit run scripts\Home.py
+streamlit run scripts/Home.py
 
 ## 網頁服務簡介
 

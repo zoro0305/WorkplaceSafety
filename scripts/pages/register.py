@@ -8,6 +8,7 @@
 
 import streamlit as st
 import json
+import re
 
 from config import ProjectConfigs
 
@@ -23,14 +24,21 @@ class Register():
                 if user_info.get(user_name_register) != None:
                     st.write("<p style='font-family:Courier; font-size: 15px; color: Tomato;'>\
                              <b>此使用者帳號已被註冊</b></p>", unsafe_allow_html=True)
-            user_password_register = st.text_input("欲註冊之使用者密碼 : ", "", max_chars=15, type="password")
+            user_password_register = st.text_input("欲註冊之使用者密碼 : ", "", max_chars=20,
+                                                   type="password")
             if user_password_register:
                 st.write("<p style='font-family:Courier; font-size: 15px; color: Tan;'>\
                         <b>已成功輸入</b></p>", unsafe_allow_html=True)
                 if user_info.get(user_name_register) == None:
-                    user_info = {**user_info, user_name_register: user_password_register}
-                    st.write("<p style='font-family:Courier; font-size: 15px; color: SaddleBrown;'>\
-                              <b>已成功註冊</b></p>", unsafe_allow_html=True)
+                    if not re.match(r"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,20}$",
+                                    user_password_register):
+                        st.write("<p style='font-family:Courier; font-size: 15px; color: Tomato;'>\
+                                 <b>密碼需為英文字母和數字組成(各至少一個), 並且長度介於8-20之間</b></p>",
+                                 unsafe_allow_html=True)
+                    else:
+                        user_info = {**user_info, user_name_register: user_password_register}
+                        st.write("<p style='font-family:Courier; font-size: 15px; color: SaddleBrown;'>\
+                                <b>已成功註冊</b></p>", unsafe_allow_html=True)
             json.dump(user_info, file)
 
     def main(self):
