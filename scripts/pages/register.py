@@ -11,6 +11,7 @@ import json
 import re
 
 from config import ProjectConfigs
+from Home import background
 
 class Register():
     def user_account_register(self):
@@ -44,6 +45,7 @@ class Register():
     def main(self):
         """the main execution function of the register page.
         """
+        background("scripts/pages/background.jpg").set_bg_hack()
         st.markdown("<p style='font-family:Courier; font-size: 37px; color: SaddleBrown;'>\
                     <b>職災ㄨㄚ熊災🐻－職場安全資訊攏底加！</b></p>", unsafe_allow_html=True)
         st.markdown("<p style='font-family:Courier; font-size: 20px;'>\

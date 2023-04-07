@@ -10,8 +10,36 @@ import streamlit as st
 import schedule
 import time
 import json
+import base64
 
 from config import ProjectConfigs
+
+class background():
+    def __init__(self, img_path: str) -> None:
+        self.img_path = img_path
+
+    def set_bg_hack(self):
+        '''
+        A function to unpack an image from root folder and set as bg.
+
+        Returns
+        -------
+        The background.
+        '''
+        # set bg name
+        main_bg_ext = "jpg"
+
+        st.markdown(
+            f"""
+            <style>
+            .stApp {{
+                background: url(data:image/{main_bg_ext};base64,{base64.b64encode(open(self.img_path, "rb").read()).decode()});
+                background-size: cover
+            }}
+            </style>
+            """,
+            unsafe_allow_html=True
+        )
 
 class streamlit_web():
     def _my_scraper(self):
@@ -55,6 +83,7 @@ class streamlit_web():
         """
         st.set_page_config(page_title="職災ㄨㄚ熊災",
                            page_icon='🔥', layout="centered")
+        background("scripts/pages/background.jpg").set_bg_hack()
         st.markdown("<p style='font-family:Courier; font-size: 37px; color: SaddleBrown;'>\
                     <b>職災ㄨㄚ熊災🐻－職場安全資訊攏底加！</b></p>", unsafe_allow_html=True)
 

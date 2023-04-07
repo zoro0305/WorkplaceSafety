@@ -15,6 +15,8 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
 from bs4 import BeautifulSoup
 
+from Home import background
+
 class company_search():
     def _company_search(self, unit: str):
         options = Options()
@@ -169,6 +171,7 @@ class company_search():
 
 
     def main(self):
+        background("scripts/pages/background.jpg").set_bg_hack()
         unit = st.text_input('輸入 自然人姓名/事業單位名稱: ', "")
         if unit:
             df1_1, df1_2, df1_3, df2, df3 = self._company_search(unit)
