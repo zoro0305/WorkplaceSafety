@@ -169,45 +169,51 @@ class company_search():
             df3 = pd.DataFrame({'企業名稱': companies, '獲獎年度': years, '獲獎名稱': prizes})
         return df1_1, df1_2, df1_3, df2, df3
 
+    def customized_df(self, df: pd.DataFrame):
+        def background_color(val):
+            return f'background-color: PapayaWhip'
+        return df.style.set_properties(color='Black').applymap(background_color)
 
     def main(self):
-        background("scripts/pages/background.jpg").set_bg_hack()
+        background("scripts/background.jpg").set_bg_hack()
+        st.markdown("<p style='font-family:Courier; font-size: 35px; color: SaddleBrown;'>\
+                    <b>職災ㄨㄚ熊災🐻－職場安全資訊攏底加！</b></p>", unsafe_allow_html=True)
         unit = st.text_input('輸入 自然人姓名/事業單位名稱: ', "")
         if unit:
             df1_1, df1_2, df1_3, df2, df3 = self._company_search(unit)
-            st.markdown("<p style='font-family:Courier; font-size: 15px; color: Red;'>\
+            st.markdown("<p style='font-family:Courier; font-size: 15px; color: Peru;'>\
                         <b>近期違反勞動基準法／工會法之紀錄</b></p>", unsafe_allow_html=True)
             if not df1_1.empty:
-                st.table(df1_1)
+                st.dataframe(self.customized_df(df1_1))
             else:
                 st.markdown("<p style='font-family:Courier; font-size: 15px;'>\
                             查無近期相關紀錄</p>", unsafe_allow_html=True)
-            st.markdown("<p style='font-family:Courier; font-size: 15px; color: Red;'>\
+            st.markdown("<p style='font-family:Courier; font-size: 15px; color: Peru;'>\
                         <b>近期違反性別工作平等法／職業安全衛生法／就業服務法／中高齡者及高齡者就業促進法之紀錄</b></p>",
                         unsafe_allow_html=True)
             if not df1_2.empty:
-                st.table(df1_2)
+                st.dataframe(self.customized_df(df1_2))
             else:
                 st.markdown("<p style='font-family:Courier; font-size: 15px;'>\
                             查無近期相關紀錄</p>", unsafe_allow_html=True)
-            st.markdown("<p style='font-family:Courier; font-size: 15px; color: Red;'>\
+            st.markdown("<p style='font-family:Courier; font-size: 15px; color: Peru;'>\
                         <b>近期違反勞工退休金條例／勞工職業災害保險及保護法之紀錄</b></p>", unsafe_allow_html=True)
             if not df1_3.empty:
-                st.table(df1_3)
+                st.dataframe(self.customized_df(df1_3))
             else:
                 st.markdown("<p style='font-family:Courier; font-size: 15px;'>\
                             查無近期相關紀錄</p>", unsafe_allow_html=True)
-            st.markdown("<p style='font-family:Courier; font-size: 15px; color: Red;'>\
+            st.markdown("<p style='font-family:Courier; font-size: 15px; color: Peru;'>\
                         <b>近期重大職業災害之紀錄</b></p>", unsafe_allow_html=True)
             if not df2.empty:
-                st.table(df2)
+                st.dataframe(self.customized_df(df2))
             else:
                 st.markdown("<p style='font-family:Courier; font-size: 15px;'>\
                             查無近期相關紀錄</p>", unsafe_allow_html=True)
-            st.markdown("<p style='font-family:Courier; font-size: 15px; color: Green;'>\
+            st.markdown("<p style='font-family:Courier; font-size: 15px; color: Peru;'>\
                         <b>近期職業安全衛生優良之紀錄</b></p>", unsafe_allow_html=True)
             if not df3.empty:
-                st.table(df3)
+                st.dataframe(self.customized_df(df3))
             else:
                 st.markdown("<p style='font-family:Courier; font-size: 15px;'>\
                             查無近期相關紀錄</p>", unsafe_allow_html=True)

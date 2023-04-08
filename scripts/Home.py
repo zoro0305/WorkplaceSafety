@@ -34,7 +34,7 @@ class background():
             <style>
             .stApp {{
                 background: url(data:image/{main_bg_ext};base64,{base64.b64encode(open(self.img_path, "rb").read()).decode()});
-                background-size: cover
+                background-size: contain
             }}
             </style>
             """,
@@ -42,24 +42,9 @@ class background():
         )
 
 class streamlit_web():
-    def _my_scraper(self):
-        pass
-
-    def _run_scheduler(self):
-        """A function that executes regularly every day.
-        """
-        schedule.every().day.at("12:00").do(self._my_scraper)
-
-        while True:
-            schedule.run_pending()
-            time.sleep(1)
-
     def user_account_login(self,):
         with open(ProjectConfigs.USER_INFO_PATH.value, "r", encoding="utf-8") as file:
             user_info = json.load(file)
-        register = st.checkbox("立即註冊帳戶")
-        if register:
-            pass
         user_name_login = st.text_input("使用者名稱 : ", "", max_chars=10)
         if user_name_login:
             st.write("<p style='font-family:Courier; font-size: 15px; color: Tan;'>\
@@ -83,20 +68,23 @@ class streamlit_web():
         """
         st.set_page_config(page_title="職災ㄨㄚ熊災",
                            page_icon='🔥', layout="centered")
-        background("scripts/pages/background.jpg").set_bg_hack()
-        st.markdown("<p style='font-family:Courier; font-size: 37px; color: SaddleBrown;'>\
+        background("scripts/background.jpg").set_bg_hack()
+        st.markdown("<p style='font-family:Courier; font-size: 35px; color: SaddleBrown;'>\
                     <b>職災ㄨㄚ熊災🐻－職場安全資訊攏底加！</b></p>", unsafe_allow_html=True)
 
-        col1, col2 = st.columns(2)
-        with col1:
-            st.markdown("<p style='font-family:Noto Sans TC; font-size: 20px'>\
-                        網頁簡介</p>", unsafe_allow_html=True)
-
-        with col2:
-            self.user_account_login()
-
-        # 每天的定時運行
-        self._run_scheduler()
+        st.markdown("<p style='font-family:Noto Sans TC; font-size: 20px'>\
+                    <b>使用者登入</b></p>", unsafe_allow_html=True)
+        self.user_account_login()
+        st.markdown("<p style='font-family:Noto Sans TC; font-size: 20px'>\
+                    <b><br>網頁理念</b></p>", unsafe_allow_html=True)
+        st.markdown("<p style='font-family:Noto Sans TC; font-size: 15'>\
+                    &emsp;&emsp;在這科技進步的時代，其實仰賴著許多勞工的默默付出,\
+                    但諷刺的是，「工安意外」、「過勞致死」諸類有關職場安全上的問題卻層出不窮。\
+                    於是我們想...<br><br>\
+                    ➊ <b>成為勞工職場的幫手</b>，提供一個可靠好用的 app，幫助勞工避免職場危險;<br>\
+                    ➋ <b>成為勞工背後的靠山</b>，提供一個不幸發生意外時可以保障勞工權益的管道;<br>\
+                    ➌ <b>成為勞工信賴的夥伴</b>，提供一個便捷的系統，以即時回覆勞工們的問題。<br></p>",
+                    unsafe_allow_html=True)
 
 if __name__ == "__main__":
     web = streamlit_web()

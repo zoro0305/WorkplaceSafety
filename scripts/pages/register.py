@@ -34,7 +34,7 @@ class Register():
                     if not re.match(r"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,20}$",
                                     user_password_register):
                         st.write("<p style='font-family:Courier; font-size: 15px; color: Tomato;'>\
-                                 <b>密碼需為英文字母和數字組成(各至少一個), 並且長度介於8-20之間</b></p>",
+                                 <b>密碼需為英文字母和數字組成(各至少一個)，並且長度介於8-20之間!</b></p>",
                                  unsafe_allow_html=True)
                     else:
                         user_info = {**user_info, user_name_register: user_password_register}
@@ -45,8 +45,8 @@ class Register():
     def main(self):
         """the main execution function of the register page.
         """
-        background("scripts/pages/background.jpg").set_bg_hack()
-        st.markdown("<p style='font-family:Courier; font-size: 37px; color: SaddleBrown;'>\
+        background("scripts/background.jpg").set_bg_hack()
+        st.markdown("<p style='font-family:Courier; font-size: 35px; color: SaddleBrown;'>\
                     <b>職災ㄨㄚ熊災🐻－職場安全資訊攏底加！</b></p>", unsafe_allow_html=True)
         st.markdown("<p style='font-family:Courier; font-size: 20px;'>\
                     <b>使用者帳號密碼註冊</b></p>", unsafe_allow_html=True)
