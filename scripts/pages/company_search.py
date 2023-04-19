@@ -19,7 +19,6 @@ from Home import background
 
 class company_search():
     def _company_search(self, unit: str):
-        chrome.ChromeDriverManager().clean_cache()
         options = webdriver.ChromeOptions()
         options.add_argument("--disable-notifications")
         options.add_argument("--headless")
