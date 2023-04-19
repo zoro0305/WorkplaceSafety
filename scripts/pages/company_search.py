@@ -28,7 +28,7 @@ class company_search():
         try:
             chrome = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
         except:
-            chrome = webdriver.Chrome(service="/home/appuser/.wdm/drivers/chromedriver/linux64/112.0.5615/chromedriver",
+            chrome = webdriver.Chrome("/home/appuser/.wdm/drivers/chromedriver/linux64/112.0.5615/chromedriver",
                                       options=options)
 
         chrome.get("https://announcement.mol.gov.tw/")
