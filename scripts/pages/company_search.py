@@ -19,17 +19,13 @@ from Home import background
 
 class company_search():
     def _company_search(self, unit: str):
-        options = webdriver.ChromeOptions()
+        options = Options()
         options.add_argument("--disable-notifications")
         options.add_argument("--headless")
         options.add_argument("--disable-gpu")
 
         ######違反勞動法令紀錄
-        try:
-            chrome = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
-        except:
-            chrome = webdriver.Chrome("/home/appuser/.wdm/drivers/chromedriver/linux64/112.0.5615/chromedriver",
-                                      options=options)
+        chrome = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 
         chrome.get("https://announcement.mol.gov.tw/")
 

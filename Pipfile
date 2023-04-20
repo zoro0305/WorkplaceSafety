@@ -10,6 +10,7 @@ pyyaml = "*"
 selenium = "*"
 webdriver-manager = "*"
 bs4 = "*"
+seleniumbase = "*"
 
 [dev-packages]
 pylint = "*"
