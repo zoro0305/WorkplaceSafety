@@ -23,9 +23,10 @@ class company_search():
         options.add_argument("--disable-notifications")
         options.add_argument("--headless")
         options.add_argument("--disable-gpu")
+        service=Service(ChromeDriverManager().install())
 
         ######違反勞動法令紀錄
-        chrome = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+        chrome = webdriver.Chrome(service=service, options=options)
 
         chrome.get("https://announcement.mol.gov.tw/")
 
@@ -40,7 +41,7 @@ class company_search():
         chrome.quit()
 
         ######重大職業災害紀錄
-        chrome = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+        chrome = webdriver.Chrome(service=service, options=options)
 
         chrome.get("https://pacs.osha.gov.tw/2875/")
 
@@ -55,7 +56,7 @@ class company_search():
         chrome.quit()
 
         ######職業衛生安全紀錄
-        chrome = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+        chrome = webdriver.Chrome(service=service, options=options)
 
         chrome.get("https://pacs.osha.gov.tw/2872/")
 
