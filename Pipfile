@@ -5,12 +5,8 @@ name = "pypi"
 
 [packages]
 streamlit = "*"
-schedule = "*"
 pyyaml = "*"
-selenium = "*"
-webdriver-manager = "*"
 bs4 = "*"
-seleniumbase = "*"
 
 [dev-packages]
 pylint = "*"

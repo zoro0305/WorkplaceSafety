@@ -7,8 +7,6 @@
 '''
 
 import streamlit as st
-import schedule
-import time
 import json
 import base64
 
