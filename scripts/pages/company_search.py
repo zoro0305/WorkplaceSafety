@@ -8,72 +8,25 @@
 
 import streamlit as st
 import pandas as pd
-import time
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.chrome.service import Service
+import requests
+import re
 from bs4 import BeautifulSoup
 
 from Home import background
 
 class company_search():
     def _company_search(self, unit: str):
-        options = Options()
-        options.add_argument("--disable-notifications")
-        options.add_argument("--headless")
-        options.add_argument("--disable-gpu")
-        service=Service(ChromeDriverManager().install())
-
         ######違反勞動法令紀錄
-        chrome = webdriver.Chrome(service=service, options=options)
+        url1 = "https://announcement.mol.gov.tw/"
 
-        chrome.get("https://announcement.mol.gov.tw/")
+        data1 = {
+            "UNITNAME": unit
+        }
+        response = requests.post(url1, data=data1)
+        html = response.text
 
-        unitname = chrome.find_element("id", "unitname")
-
-        unitname.send_keys(unit)
-        unitname.submit()
-
-        html1 = chrome.page_source
-
-        time.sleep(0.5)
-        chrome.quit()
-
-        ######重大職業災害紀錄
-        chrome = webdriver.Chrome(service=service, options=options)
-
-        chrome.get("https://pacs.osha.gov.tw/2875/")
-
-        unitname = chrome.find_element("id", "info_q")
-
-        unitname.send_keys(unit)
-        unitname.submit()
-
-        html2 = chrome.page_source
-
-        time.sleep(0.5)
-        chrome.quit()
-
-        ######職業衛生安全紀錄
-        chrome = webdriver.Chrome(service=service, options=options)
-
-        chrome.get("https://pacs.osha.gov.tw/2872/")
-
-        unitname = chrome.find_element("id", "info_q")
-
-        unitname.send_keys(unit)
-        unitname.submit()
-
-        html3 = chrome.page_source
-
-        time.sleep(0.5)
-        chrome.quit()
-
-        ######找關鍵字
-
-        #1-"https://announcement.mol.gov.tw/"
-        soup = BeautifulSoup(html1, 'html.parser')
+        # 使用 BeautifulSoup 解析頁面内容
+        soup = BeautifulSoup(html, "html.parser")
 
         for td in soup.find_all('td', class_='column10'):
             td.extract()
@@ -118,56 +71,95 @@ class company_search():
             df1_3 = df1_3.rename(columns={2: '處分日期', 4: "事業單位名稱(負責人) / 自然人姓名",
                                         5: "違法法規法條 ", 6: "違反法規內容", 7: "處分金額／滯納金"})
 
-        #2-"https://pacs.osha.gov.tw/2875/"
-        soup = BeautifulSoup(html2, 'html.parser')
+        ######重大職業災害紀錄
+        url2 = "https://pacs.osha.gov.tw/2875/"
 
-        times=[]
-        for tim in soup.find_all('td', {'data-title': '發生日期'}):
-            times.append(tim.text.strip())
+        data2 = {
+            "q": unit
+        }
+        response = requests.get(url2, params=data2)
+        html = response.text
 
-        companies=[]
-        for company in soup.find_all('td', {'data-title': '事業單位'}):
-            companies.append(company.text.strip())
+        # 使用 BeautifulSoup 解析頁面内容
+        soup = BeautifulSoup(html, "html.parser")
 
-        owners=[]
-        for owner in soup.find_all('td', {'data-title': '業主'}):
-            owners.append(owner.text.strip())
+        events = []
+        for event in soup.find_all('div', {'class': 'publiclist'}):
+            events.append(event.text.strip())
 
-        places=[]
-        for place in soup.find_all('td', {'data-title': '場所(肇災處)'}):
-            places.append(place.text.strip())
-
-        addresses=[]
-        for address in soup.find_all('td', {'data-title': '地址'}):
-            addresses.append(address.text.strip())
-
-        disasters=[]
-        for disaster in soup.find_all('td', {'data-title': '災害類型'}):
-            disasters.append(disaster.text.strip())
+        times, companies, owners, places, addresses, disasters = [], [], [], [], [], []
+        for event in events:
+            try:
+                time_pattern = r'發生日期：(.*)\n'
+                time_match = re.search(time_pattern, event)
+                times.append(time_match.group(1))
+            except:
+                times.append("")
+            try:
+                company_pattern = r'事業單位：(.*)\n'
+                company_match = re.search(company_pattern, event)
+                companies.append(company_match.group(1))
+            except:
+                companies.append("")
+            try:
+                owner_pattern = r'業主：(.*)\n'
+                owner_match = re.search(owner_pattern, event)
+                owners.append(owner_match.group(1))
+            except:
+                owners.append("")
+            try:
+                place_pattern = r'場所(.*)\n'
+                place_match = re.search(place_pattern, event)
+                places.append(place_match.group(1)[5:])
+            except:
+                places.append("")
+            try:
+                address_pattern = r'地址(.*)\n'
+                address_match = re.search(address_pattern, event)
+                addresses.append(address_match.group(1))
+            except:
+                addresses.append("")
+            try:
+                disaster_pattern = r'災害類型：(.*)\n'
+                disaster_match = re.search(disaster_pattern, event)
+                disasters.append(disaster_match.group(1))
+            except:
+                disasters.append("")
 
         df2 = pd.DataFrame()
         if times:
             df2 = pd.DataFrame({'發生日期': times, '事業單位': companies, '業主': owners,
                                 '場所(肇災處)': places, '地址': addresses, '災害類型': disasters})
 
-        #3-"https://pacs.osha.gov.tw/2872/"
-        soup = BeautifulSoup(html3, 'html.parser')
+        ######職業衛生安全紀錄
+        url3 = "https://pacs.osha.gov.tw/2872/"
 
-        years=[]
-        for year in soup.find_all('td', {'data-title': '獲獎年度'}):
-            years.append(year.text.strip())
+        data3 = {
+            "q": unit
+        }
+        response = requests.get(url3, params=data3)
+        html = response.text
 
-        prizes=[]
-        for prize in soup.find_all('td', {'data-title': '獲獎名稱'}):
-            prizes.append(prize.text.strip())
+        # 使用 BeautifulSoup 解析頁面内容
+        soup = BeautifulSoup(html, "html.parser")
 
-        companies=[]
-        for company in soup.find_all('td', {'data-title': '企業名稱'}):
-            companies.append(company.text.strip())
+        events = []
+        for event in soup.find_all('tr'):
+            events.append(event.text.strip())
+
+        events = events[1:]
+        years, prizes, companies = [], [], []
+        for event in events:
+            event = event.split("\n")
+            event = [_ for _ in event if _ != ""]
+            years.append(event[1])
+            prizes.append(event[2])
+            companies.append(event[3])
 
         df3 = pd.DataFrame()
         if years:
             df3 = pd.DataFrame({'企業名稱': companies, '獲獎年度': years, '獲獎名稱': prizes})
+
         return df1_1, df1_2, df1_3, df2, df3
 
     def customized_df(self, df: pd.DataFrame):
