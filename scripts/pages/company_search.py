@@ -10,21 +10,20 @@ import streamlit as st
 import pandas as pd
 import requests
 import re
-import urllib3
 from bs4 import BeautifulSoup
 
 from Home import background
 
 class company_search():
     def _company_search(self, unit: str):
-        urllib3.disable_warnings()
+        headers = {'user-agent': 'Mozilla/5.0'}
         ######違反勞動法令紀錄
         url1 = "https://announcement.mol.gov.tw/"
 
         data1 = {
             "UNITNAME": unit
         }
-        response = requests.post(url1, data=data1, verify=False)
+        response = requests.post(url1, data=data1, headers=headers, verify = False, timeout = 3)
         html = response.text
 
         # 使用 BeautifulSoup 解析頁面内容
@@ -79,7 +78,7 @@ class company_search():
         data2 = {
             "q": unit
         }
-        response = requests.get(url2, params=data2, verify=False)
+        response = requests.get(url2, params=data2, headers=headers, verify = False, timeout = 3)
         html = response.text
 
         # 使用 BeautifulSoup 解析頁面内容
@@ -139,7 +138,7 @@ class company_search():
         data3 = {
             "q": unit
         }
-        response = requests.get(url3, params=data3, verify=False)
+        response = requests.get(url3, params=data3, headers=headers, verify = False, timeout = 3)
         html = response.text
 
         # 使用 BeautifulSoup 解析頁面内容
